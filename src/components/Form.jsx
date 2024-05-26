@@ -33,11 +33,39 @@ const Form = () => {
                 message: ''
             });
         }
+        console.log(formData);
+        console.log(errors)
     }
 
 
     const verifyData = (data) => {
-        return true; 
+        setErrors({
+            errorFirstName: null,
+            errorLastName: null,
+            errorEmail: null,
+            errorMessage: null,
+        })
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        let err = errors;
+        console.log(errors)
+        if(data.firstName===''){
+            err = {...err, errorFirstName: 'empty'}
+        }
+        if(data.lastName===''){
+            err = {...err, errorLastName: 'empty'}
+        }
+        if(data.email===''){
+            err = {...err, errorEmail: 'empty'}
+        } else {
+            if (!data.email.match(emailRegex)){
+                err = {...err, errorEmail: 'invalid'}
+            }
+        }
+        if(data.message===''){
+            err = {...err, errorMessage: 'empty'}
+        }
+        setErrors(err)
+        return true
     }
 
 
@@ -47,20 +75,20 @@ const Form = () => {
             <div className='w-full flex flex-col lg:flex-row justify-center items-center mb-4'>
                 <div className="w-full flex flex-col justify-center items-start mb-4">
                     <label className="mb-2" htmlFor="firstName">First Name</label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="firstName" name="firstName" />
-                    <p className='hidden'>This field is required</p>
+                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} />
+                    {errors.errorFirstName==='empty' && <p>This field is required</p>}
                 </div>
                 <div className="w-full flex flex-col justify-center items-start">
                     <label className="mb-2" htmlFor="lastName">Last Name</label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="lastName" name="lastName" />
-                    <p className='hidden'>This field is required</p>
+                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="lastName" name="lastName" value={formData.lastName}  onChange={handleChange} />
+                    {errors.errorLastName==='empty' && <p>This field is required</p>}
                 </div>
             </div>
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="email">Email Address</label>
-                <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="email" name="email" />
-                <p className='hidden'>Please enter a valid email address</p>
-                <p className='hidden'>This field is required</p>
+                <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="email" name="email" onChange={handleChange} value={formData.email} />
+                {errors.errorEmail==='invalid' && <p>Please enter a valid email address</p>}
+                {errors.errorEmail==='empty' && <p>This field is required</p>}
             </div>
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="queryType">Query Type</label>
@@ -77,8 +105,8 @@ const Form = () => {
             </div>                              
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="message">Message</label>
-                <textarea className='w-full border border-[#2b4246] rounded-md' id="message" rows="8" name="message"></textarea>
-                <p className='hidden'>This field is required</p>
+                <textarea className='w-full border border-[#2b4246] rounded-md' id="message" rows="8" name="message" value={formData.message} onChange={handleChange}></textarea>
+                {errors.errorMessage==='empty' && <p>This field is required</p>}
             </div>
             <div className="my-4">
                 <div className='flex flex-row'>
@@ -93,4 +121,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default Form;
