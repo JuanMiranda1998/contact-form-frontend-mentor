@@ -73,7 +73,7 @@ const Form = () => {
         <form className="text-[#2b4246]">
             <h1 className='text-3xl font-bold mb-6'>Contact Us</h1>
             <div className='w-full flex flex-col lg:flex-row justify-center items-center mb-4'>
-                <div className="w-full flex flex-col justify-center items-start mb-4">
+                <div className="w-full flex flex-col justify-center items-start mb-4 lg:mb-0">
                     <label className="mb-2" htmlFor="firstName">First Name</label>
                     <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} />
                     {errors.errorFirstName==='empty' && <p>This field is required</p>}
@@ -116,7 +116,7 @@ const Form = () => {
                 <p className='hidden'>To submit this form, please consent to being contacted</p>
             </div>
             <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center" onClick={handleSubmit}>Submit</button>
-            {emailSubmitted&&<ConfirmationMessage />}
+            {!!emailSubmitted&&<ConfirmationMessage />}
         </form>
     )
 }
