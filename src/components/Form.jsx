@@ -31,39 +31,29 @@ const Form = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const verifiedFields = verifyData(formData);
-        if (verifiedFields){
-            setEmailSubmitted(true);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                queryType: '',
-                message: '',
-                consent: false,
-            });
+        resetErrors()
+        const data = {  
+            firstName: e.target.firstName.value,
+            lastName: e.target.lastName.value,
+            email: e.target.email.value,
+            queryType: e.target.queryType.value,
+            message: e.target.message.value,
+            consent: e.target.consent.checked,
         }
-        console.log(formData);
-        console.log(errors)
+
+        const verifiedFields = verifyData(data);
+        if (verifiedFields){
+            setFormData(data);
+            setEmailSubmitted(true);
+        }
     }
 
-
-
     const verifyData = (data) => {
-        setErrors({
-            errorFirstName: null,
-            errorLastName: null,
-            errorEmail: null,
-            errorMessage: null,
-            errorQueryType: null,
-            errorTermsCheck: null,
-        })
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         let err = errors;
-        console.log(errors)
         if(data.firstName===''){
             err = {...err, errorFirstName: 'empty'}
-        }
+        } 
         if(data.lastName===''){
             err = {...err, errorLastName: 'empty'}
         }
@@ -87,9 +77,20 @@ const Form = () => {
         return true
     }
 
+    const resetErrors = () => {
+        setErrors({
+            errorFirstName: null,
+            errorLastName: null,
+            errorEmail: null,
+            errorMessage: null,
+            errorQueryType: null,
+            errorTermsCheck: null,
+        })
+    }
+
 
     return (
-        <form className="text-[#2b4246]">
+        <form className="text-[#2b4246]" onSubmit={handleSubmit}>
             <h1 className='text-3xl font-bold mb-6'>Contact Us</h1>
             <div className='w-full flex flex-col lg:flex-row justify-center items-center mb-4'>
                 <div className="w-full flex flex-col justify-center items-start mb-4 lg:mb-0 lg:mr-2">
@@ -106,7 +107,7 @@ const Form = () => {
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="email">Email Address</label>
                 <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="email" name="email" onChange={handleChange} />
-                {errors.errorEmail==='invalid' && <p>Please enter a valid email address</p>}
+                {errors.errorEmail==='invalid' && <p className="my-2 text-sm text-[#d94545]">Please enter a valid email address</p>}
                 {errors.errorEmail==='empty' && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
             </div>
             <div className="w-full flex flex-col justify-center items-start mb-4">
@@ -134,7 +135,7 @@ const Form = () => {
                 </div>
                 {errors.errorTermsCheck==='notChecked' && <p className="my-2 text-sm text-[#d94545]">To submit this form, please consent to being contacted</p>}
             </div>
-            <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center" onClick={handleSubmit}>Submit</button>
+            <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center">Submit</button>
             {emailSubmitted&&<ConfirmationMessage />}
         </form>
     )
