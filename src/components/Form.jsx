@@ -12,14 +12,6 @@ const Form = () => {
         message: '',
         consent: false,
     })
-    const [errors, setErrors] = useState({
-        errorFirstName: null,
-        errorLastName: null,
-        errorEmail: null,
-        errorMessage: null,
-        errorQueryType: null,
-        errorTermsCheck: null,
-    })
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value})
@@ -32,27 +24,32 @@ const Form = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setEmailSubmitted(false)
-        resetErrors()
-        const data = {  
-            firstName: e.target.firstName.value,
-            lastName: e.target.lastName.value,
-            email: e.target.email.value,
-            queryType: e.target.queryType.value,
-            message: e.target.message.value,
-            consent: e.target.consent.checked,
-        }
-
-        const verifiedFields = verifyData(data);
-        if (verifiedFields){
-            setFormData(data);
+        let errors = getErrors(formData);
+        console.log(errors)
+        errors = Object.values(errors);
+        const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
+        if (!errors.some(errorValues)){
             setEmailSubmitted(true);
-
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                queryType: '',
+                message: '',
+                consent: false,
+            })
         }
     }
 
-    const verifyData = (data) => {
-        
-        let err = errors;
+    const getErrors = (data) => {
+        let err = [{
+            errorFirstName: null,
+            errorLastName: null,
+            errorEmail: null,
+            errorMessage: null,
+            errorQueryType: null,
+            errorTermsCheck: null 
+        }];
         if(isEmpty(data.firstName)){
             err = {...err, errorFirstName: 'empty'}
         } 
@@ -75,13 +72,8 @@ const Form = () => {
         if(!data.consent){
             err = {...err, errorTermsCheck: 'notChecked'}
         }
-        setErrors(err)
-        err = Object.values(err)
-        const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
-        if (err.some(errorValues)){
-            return false
-        }
-        return true
+        
+        return err;
     }
 
     const isEmpty = (value) => {
@@ -93,17 +85,6 @@ const Form = () => {
         return email.match(emailRegex);
     }
 
-    const resetErrors = () => {
-        setErrors({
-            errorFirstName: null,
-            errorLastName: null,
-            errorEmail: null,
-            errorMessage: null,
-            errorQueryType: null,
-            errorTermsCheck: null,
-        })
-    }
-
 
     return (
         <form className="text-[#2b4246]" onSubmit={handleSubmit}>
@@ -111,20 +92,20 @@ const Form = () => {
             <div className='w-full flex flex-col lg:flex-row justify-center items-center mb-4'>
                 <div className="w-full flex flex-col justify-center items-start mb-4 lg:mb-0 lg:mr-2">
                     <label className="mb-2" htmlFor="firstName">First Name <span>*</span></label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="firstName" name="firstName" onChange={handleChange} />
-                    {errors.errorFirstName==='empty' && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
+                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="firstName" name="firstName" onChange={handleChange} value={formData.firstName} />
+                    {isEmpty(formData.firstName) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
                 </div>
                 <div className="w-full flex flex-col justify-center items-start">
                     <label className="mb-2" htmlFor="lastName">Last Name <span>*</span></label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="lastName" name="lastName" onChange={handleChange} />
-                    {errors.errorLastName==='empty' && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
+                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="lastName" name="lastName" onChange={handleChange} value={formData.lastName} />
+                    {isEmpty(formData.lastName) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
                 </div>
             </div>
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="email">Email Address <span>*</span></label>
-                <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="email" name="email" onChange={handleChange} />
-                {errors.errorEmail==='invalid' && <p className="my-2 text-sm text-[#d94545]">Please enter a valid email address</p>}
-                {errors.errorEmail==='empty' && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
+                <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md' type="text" id="email" name="email" onChange={handleChange} value={formData.email} />
+                {isEmpty(formData.email) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
+                {!isEmpty(formData.email) && !verifyEmail(formData.email) && <p className="my-2 text-sm text-[#d94545]">Please enter a valid email address</p>}
             </div>
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="queryType">Query Type <span>*</span></label>
@@ -137,19 +118,19 @@ const Form = () => {
                         <input type="radio" name="queryType" value="supportRequest" onClick={handleChange} />
                         <p className='ml-2'>Support Request</p></div>
                 </div>
-                {errors.errorQueryType==='empty' && <p className="my-2 text-sm text-[#d94545]">Please select a query type</p>}
+                {isEmpty(formData.queryType) && <p className="my-2 text-sm text-[#d94545]">Please select a query type</p>}
             </div>                              
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="message">Message <span>*</span></label>
-                <textarea className='w-full border border-[#2b4246] rounded-md' id="message" rows="8" name="message" onChange={handleChange}></textarea>
-                {errors.errorMessage==='empty' && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
+                <textarea className='w-full border border-[#2b4246] rounded-md' id="message" rows="8" name="message" onChange={handleChange} value={formData.message}></textarea>
+                {isEmpty(formData.message) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
             </div>
             <div className="my-4">
                 <div className='flex flex-row'>
-                    <input type="checkbox" name="consent" id="consent" onChange={handleCheckbox} />
+                    <input type="checkbox" name="consent" id="consent" onChange={handleCheckbox} value={formData.consent} />
                     <p className='ml-4'>I consent to being contacted by the team <span>*</span></p>
                 </div>
-                {errors.errorTermsCheck==='notChecked' && <p className="my-2 text-sm text-[#d94545]">To submit this form, please consent to being contacted</p>}
+                {!formData.consent && <p className="my-2 text-sm text-[#d94545]">To submit this form, please consent to being contacted</p>}
             </div>
             <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center">Submit</button>
             {emailSubmitted&&<ConfirmationMessage />}
