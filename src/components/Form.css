@@ -32,7 +32,6 @@
   
   /* On mouse-over, add a grey background color */
   .inputCheckContainer:hover input ~ .checkmark {
-    background-color: #7fc9bc;
     border: 2px #7fc9bc solid;
   }
   
