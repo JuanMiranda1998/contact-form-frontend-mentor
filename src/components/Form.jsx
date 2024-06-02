@@ -1,6 +1,7 @@
 import './Form.css'
 import { useState } from "react"
 import ConfirmationMessage from "./ConfirmationMessage"
+import FormInput from './FormInput'
 
 const Form = () => {
     const [emailSubmitted, setEmailSubmitted] = useState(false)
@@ -12,6 +13,16 @@ const Form = () => {
         message: '',
         consent: false,
     })
+
+    let err = [
+        { input: 'firstName', errorType: '' },
+        { input: 'lastName', errorType: '' },
+        { input: 'email', errorType: '' },
+        { input: 'queryType', errorType: '' },
+        { input: 'message', errorType: '' },
+        { input: 'consent', errorType: '' },
+];
+
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value})
@@ -25,54 +36,40 @@ const Form = () => {
         e.preventDefault();
         setEmailSubmitted(false)
         let errors = getErrors(formData);
-        console.log(errors)
-        errors = Object.values(errors);
+        const errorArrValues = errors.map((field) =>
+            field.errorType);
+        console.log('errorArrValues: '+ errorArrValues)
         const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
-        if (!errors.some(errorValues)){
+        if (!errorArrValues.some(errorValues)){
+            console.log('valid form')
             setEmailSubmitted(true);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                queryType: '',
-                message: '',
-                consent: false,
-            })
         }
     }
 
+
     const getErrors = (data) => {
-        let err = [{
-            errorFirstName: null,
-            errorLastName: null,
-            errorEmail: null,
-            errorMessage: null,
-            errorQueryType: null,
-            errorTermsCheck: null 
-        }];
         if(isEmpty(data.firstName)){
-            err = {...err, errorFirstName: 'empty'}
+            err.filter(entry => entry.input==='firstName')[0].errorType = 'empty';
         } 
         if(isEmpty(data.lastName)){
-            err = {...err, errorLastName: 'empty'}
+            err.filter(entry => entry.input==='lastName')[0].errorType = 'empty';
         }
         if(isEmpty(data.email)){
-            err = {...err, errorEmail: 'empty'}
+            err.filter(entry => entry.input==='email')[0].errorType = 'empty';
         } else {
             if (!verifyEmail(data.email)){
-                err = {...err, errorEmail: 'invalid'}
+                err.filter(entry => entry.input==='email')[0].errorType = 'invalid';
             }
         }
         if(isEmpty(data.queryType)){
-            err = {...err, errorQueryType: 'empty'}
+            err.filter(entry => entry.input==='queryType')[0].errorType = 'empty';
         }
         if(isEmpty(data.message)){
-            err = {...err, errorMessage: 'empty'}
+            err.filter(entry => entry.input==='message')[0].errorType = 'empty';
         }
         if(!data.consent){
-            err = {...err, errorTermsCheck: 'notChecked'}
+            err.filter(entry => entry.input==='consent')[0].errorType = 'notChecked';
         }
-        
         return err;
     }
 
@@ -85,28 +82,50 @@ const Form = () => {
         return email.match(emailRegex);
     }
 
+    const getIsErrorActive = (id) => {
+        if (isEmpty(formData[id])){
+            return true;
+        } else {
+            if (id==='email'){
+                return !verifyEmail(formData[id])
+            }
+        }
+        return false;
+    }
+
 
     return (
         <form className="w-full text-[#2b4246]" onSubmit={handleSubmit}>
             <h1 className='text-3xl font-bold mb-6'>Contact Us</h1>
             <div className='w-full flex flex-col lg:flex-row justify-center items-center mb-4'>
-                <div className="w-full flex flex-col justify-center items-start mb-4 lg:mb-0 lg:mr-2">
-                    <label className="mb-2" htmlFor="firstName">First Name <span className="text-[#0c7d69]">*</span></label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] focus:outline-none focus:border-2 focus:border-[#0c7d69]' type="text" id="firstName" name="firstName" onChange={handleChange} value={formData.firstName} />
-                    <div className="h-6">{isEmpty(formData.firstName) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}</div>
-                </div>
-                <div className="w-full flex flex-col justify-center items-start">
-                    <label className="mb-2" htmlFor="lastName">Last Name <span className="text-[#0c7d69]">*</span></label>
-                    <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] focus:outline-none focus:border-2 focus:border-[#0c7d69]' type="text" id="lastName" name="lastName" onChange={handleChange} value={formData.lastName} />
-                    <div className="h-6">{isEmpty(formData.lastName) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}</div>
-                </div>
+                <FormInput 
+                    id="firstName"
+                    name="First Name"
+                    type="text"
+                    formData={formData.firstName}
+                    handleChange={handleChange}
+                    errors={[{type: "empty", message: "This field is required"}]}
+                    errorActive={getIsErrorActive('firstName')}
+                />
+                <FormInput 
+                    id="lastName"
+                    name="Last Name"
+                    type="text"
+                    formData={formData.lastName}
+                    handleChange={handleChange}
+                    errors={[{type: "empty", message: "This field is required"}]}
+                    errorActive={getIsErrorActive('lastName')}
+                />
             </div>
-            <div className="w-full flex flex-col justify-center items-start mb-4">
-                <label className="mb-2" htmlFor="email">Email Address <span className="text-[#0c7d69]">*</span></label>
-                <input className='w-full py-2 pl-4 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] focus:outline-none focus:border-2 focus:border-[#0c7d69]' type="text" id="email" name="email" onChange={handleChange} value={formData.email} />
-                {isEmpty(formData.email) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
-                {!isEmpty(formData.email) && !verifyEmail(formData.email) && <p className="my-2 text-sm text-[#d94545]">Please enter a valid email address</p>}
-            </div>
+            <FormInput 
+                    id="email"
+                    name="Email"
+                    type="email"
+                    formData={formData.email}
+                    handleChange={handleChange}
+                    errors={[{type: "empty", message: "This field is required"}, {type: "invalid", message: "Please enter a valid email address"}]}
+                    errorActive={getIsErrorActive('email')}
+                />
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="queryType">Query Type <span className="text-[#0c7d69]">*</span></label>
                 <div className='w-full flex flex-col lg:flex-row gap-4 mb-4 lg:mb-0'>
@@ -127,7 +146,6 @@ const Form = () => {
                 {isEmpty(formData.message) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
             </div>
             <div className="my-4">
-
                 <label className="inputCheckContainer">
                     <input type="checkbox" name="consent" id="consent" onChange={handleCheckbox} value={formData.consent} />
                     <span className="checkmark"></span>

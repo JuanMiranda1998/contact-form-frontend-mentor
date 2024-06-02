@@ -1,0 +1,8 @@
+.errorMessage{
+    display: none;
+}
+
+
+input.errorValidation ~ .errorMessage{
+    display: block;
+}

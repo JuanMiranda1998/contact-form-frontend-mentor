@@ -15,6 +15,7 @@ module.exports = {
     'react/no-unescaped-entities': 'warn',
     'no-unused-vars': 'warn',
     'react/prop-types': 'warn',
+    'react/no-unknown-property': 'warn',
     'react/jsx-no-target-blank': 'off',
     'react-refresh/only-export-components': [
       'warn',
