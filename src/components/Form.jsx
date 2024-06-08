@@ -82,15 +82,17 @@ const Form = () => {
         return email.match(emailRegex);
     }
 
-    const getIsErrorActive = (id) => {
+    const getErrorActive = (id) => {
         if (isEmpty(formData[id])){
-            return true;
+            return 'empty';
         } else {
             if (id==='email'){
-                return !verifyEmail(formData[id])
+                if (!verifyEmail(formData[id])){
+                    return 'invalid';
+                }
             }
         }
-        return false;
+        return '';
     }
 
 
@@ -105,7 +107,7 @@ const Form = () => {
                     formData={formData.firstName}
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}]}
-                    errorActive={getIsErrorActive('firstName')}
+                    errorActive={getErrorActive('firstName')}
                 />
                 <FormInput 
                     id="lastName"
@@ -114,7 +116,7 @@ const Form = () => {
                     formData={formData.lastName}
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}]}
-                    errorActive={getIsErrorActive('lastName')}
+                    errorActive={getErrorActive('lastName')}
                 />
             </div>
             <FormInput 
@@ -124,7 +126,7 @@ const Form = () => {
                     formData={formData.email}
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}, {type: "invalid", message: "Please enter a valid email address"}]}
-                    errorActive={getIsErrorActive('email')}
+                    errorActive={getErrorActive('email')}
                 />
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="queryType">Query Type <span className="text-[#0c7d69]">*</span></label>

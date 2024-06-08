@@ -17,7 +17,8 @@ const FormInput = ({ id, name, formData, handleChange, type, errors, errorActive
             <div className="h-6">
                 {errors.map((error, index) => (  
                 <div key={index} className={`${isInvalid ? null : 'hidden'}`}>
-                    <p className="my-2 text-sm text-[#d94545]">{error.message}</p>
+                    <p className={`${(errorActive==='empty' && error.type==='empty') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
+                    <p className={`${(errorActive==='invalid' && error.type==='invalid') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
                 </div> ))}
             </div>
         </div>
