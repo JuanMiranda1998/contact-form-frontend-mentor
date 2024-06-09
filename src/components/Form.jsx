@@ -2,9 +2,11 @@ import './Form.css'
 import { useState } from "react"
 import ConfirmationMessage from "./ConfirmationMessage"
 import FormInput from './FormInput'
+import FormQueryType from './FormQueryType'
 
 const Form = () => {
     const [emailSubmitted, setEmailSubmitted] = useState(false)
+    const [formTriggered, setFormTriggered] = useState(false)
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -35,6 +37,7 @@ const Form = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setEmailSubmitted(false)
+        setFormTriggered(true)
         let errors = getErrors(formData);
         const errorArrValues = errors.map((field) =>
             field.errorType);
@@ -128,20 +131,16 @@ const Form = () => {
                     errors={[{type: "empty", message: "This field is required"}, {type: "invalid", message: "Please enter a valid email address"}]}
                     errorActive={getErrorActive('email')}
                 />
-            <div className="w-full flex flex-col justify-center items-start mb-4">
-                <label className="mb-2" htmlFor="queryType">Query Type <span className="text-[#0c7d69]">*</span></label>
-                <div className='w-full flex flex-col lg:flex-row gap-4 mb-4 lg:mb-0'>
-                    <label htmlFor='generalEnquiry' className='lg:w-full flex flex-row py-3 px-4 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] hover:bg-[#e0f1e7] transition-all focus:outline-none focus:border-2 focus:border-[#0c7d69]'>
-                        <input type="radio" name="queryType" id='generalEnquiry' value="generalEnquiry" onClick={handleChange} />
-                        <p className='ml-2'>General Enquiry</p>
-                    </label>
-                    <label htmlFor='supportRequest' className='lg:w-full flex flex-row py-3 px-4 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] hover:bg-[#e0f1e7] transition-all focus:outline-none focus:border-2 focus:border-[#0c7d69]'>
-                        <input type="radio" name="queryType" id='supportRequest' value="supportRequest" onClick={handleChange} />
-                        <p className='ml-2'>Support Request</p>
-                    </label>
-                </div>
-                {isEmpty(formData.queryType) && <p className="my-2 text-sm text-[#d94545]">Please select a query type</p>}
-            </div>                              
+            <FormQueryType 
+                id="queryType"
+                name="queryType"
+                type="queryType"
+                formData={formData.queryType}
+                handleChange={handleChange}
+                errors={[{type: "empty", message: "Please select a query type"}]}
+                errorActive={getErrorActive('queryType')}
+                formTriggered={formTriggered}
+            />                            
             <div className="w-full flex flex-col justify-center items-start mb-4">
                 <label className="mb-2" htmlFor="message">Message <span className="text-[#0c7d69]">*</span></label>
                 <textarea className='w-full px-4 py-2 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] focus:outline-none focus:border-2 focus:border-[#0c7d69]' id="message" rows="4" name="message" onChange={handleChange} value={formData.message}></textarea>
