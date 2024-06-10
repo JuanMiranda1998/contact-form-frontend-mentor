@@ -4,6 +4,7 @@ import ConfirmationMessage from "./ConfirmationMessage"
 import FormInput from './FormInput'
 import FormQueryType from './FormQueryType'
 import FormMessage from './FormMessage'
+import FormCheckBox from './FormCheckBox'
 
 const Form = () => {
     const [emailSubmitted, setEmailSubmitted] = useState(false)
@@ -44,7 +45,6 @@ const Form = () => {
             field.errorType);
         const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
         if (!errorArrValues.some(errorValues)){
-            console.log('valid form')
             setEmailSubmitted(true);
         }
     }
@@ -95,6 +95,11 @@ const Form = () => {
                 }
             }
         }
+        if (id==='consent'){
+            if(!formData[id]){
+                return 'notChecked';
+            }
+        }
         return '';
     }
 
@@ -111,6 +116,7 @@ const Form = () => {
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}]}
                     errorActive={getErrorActive('firstName')}
+                    formTriggered={formTriggered}
                 />
                 <FormInput 
                     id="lastName"
@@ -120,6 +126,7 @@ const Form = () => {
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}]}
                     errorActive={getErrorActive('lastName')}
+                    formTriggered={formTriggered}
                 />
             </div>
             <FormInput 
@@ -130,6 +137,7 @@ const Form = () => {
                     handleChange={handleChange}
                     errors={[{type: "empty", message: "This field is required"}, {type: "invalid", message: "Please enter a valid email address"}]}
                     errorActive={getErrorActive('email')}
+                    formTriggered={formTriggered}
                 />
             <FormQueryType 
                 id="queryType"
@@ -149,15 +157,15 @@ const Form = () => {
                 errorActive={getErrorActive('message')}
                 formTriggered={formTriggered}
             />
-            <div className="my-4">
-                <label className="inputCheckContainer">
-                    <input type="checkbox" name="consent" id="consent" onChange={handleCheckbox} value={formData.consent} />
-                    <span className="checkmark"></span>
-                    <p>I consent to being contacted by the team <span className="text-[#0c7d69]">*</span></p>
-                </label>
-
-                {!formData.consent && <p className="my-2 text-sm text-[#d94545]">To submit this form, please consent to being contacted</p>}
-            </div>
+            <FormCheckBox
+                id="consent"
+                name="consent"
+                formData={formData.consent}
+                handleChange={handleCheckbox}
+                errors={[{type: "notChecked", message: "To submit this form, please consent to being contacted"}]}
+                errorActive={getErrorActive('consent')}
+                formTriggered={formTriggered}
+            />
             <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center hover:bg-[#063f36] transition-all">Submit</button>
             {emailSubmitted&&<ConfirmationMessage />}
         </form>

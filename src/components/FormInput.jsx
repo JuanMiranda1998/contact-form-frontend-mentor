@@ -1,10 +1,10 @@
 import './FormInput.css'
 import { useEffect, useState } from "react"
 
-const FormInput = ({ id, name, formData, handleChange, type, errors, errorActive  }) => {
+const FormInput = ({ id, name, formData, handleChange, type, errors, errorActive, formTriggered  }) => {
     const [focused, setFocused] = useState(false)
 
-    const isInvalid = (errorActive!='' && focused==true);
+    const isInvalid = (errorActive!='' && focused) || (errorActive!='' && formTriggered);
 
     const handleFocus = () => {
         setFocused(true)

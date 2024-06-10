@@ -4,7 +4,7 @@ const FormMessage = ({ id, name, formData, handleChange, errors, errorActive, fo
 
   const [focused, setFocused] = useState(false)
 
-    const isInvalid = (errorActive!='' && focused==true) || (errorActive!='' && formTriggered);
+    const isInvalid = (errorActive!='' && focused) || (errorActive!='' && formTriggered);
 
     const handleFocus = () => {
         setFocused(true)
