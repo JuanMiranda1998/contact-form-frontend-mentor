@@ -41,7 +41,6 @@ const Form = () => {
         let errors = getErrors(formData);
         const errorArrValues = errors.map((field) =>
             field.errorType);
-        console.log('errorArrValues: '+ errorArrValues)
         const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
         if (!errorArrValues.some(errorValues)){
             console.log('valid form')
@@ -134,7 +133,6 @@ const Form = () => {
             <FormQueryType 
                 id="queryType"
                 name="queryType"
-                type="queryType"
                 formData={formData.queryType}
                 handleChange={handleChange}
                 errors={[{type: "empty", message: "Please select a query type"}]}
