@@ -3,6 +3,7 @@ import { useState } from "react"
 import ConfirmationMessage from "./ConfirmationMessage"
 import FormInput from './FormInput'
 import FormQueryType from './FormQueryType'
+import FormMessage from './FormMessage'
 
 const Form = () => {
     const [emailSubmitted, setEmailSubmitted] = useState(false)
@@ -139,11 +140,15 @@ const Form = () => {
                 errorActive={getErrorActive('queryType')}
                 formTriggered={formTriggered}
             />                            
-            <div className="w-full flex flex-col justify-center items-start mb-4">
-                <label className="mb-2" htmlFor="message">Message <span className="text-[#0c7d69]">*</span></label>
-                <textarea className='w-full px-4 py-2 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] focus:outline-none focus:border-2 focus:border-[#0c7d69]' id="message" rows="4" name="message" onChange={handleChange} value={formData.message}></textarea>
-                {isEmpty(formData.message) && <p className="my-2 text-sm text-[#d94545]">This field is required</p>}
-            </div>
+            <FormMessage 
+                id="message"
+                name="message"
+                formData={formData.message}
+                handleChange={handleChange}
+                errors={[{type: "empty", message: "This field is required"}]}
+                errorActive={getErrorActive('message')}
+                formTriggered={formTriggered}
+            />
             <div className="my-4">
                 <label className="inputCheckContainer">
                     <input type="checkbox" name="consent" id="consent" onChange={handleCheckbox} value={formData.consent} />
