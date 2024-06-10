@@ -46,6 +46,7 @@ const Form = () => {
         const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
         if (!errorArrValues.some(errorValues)){
             setEmailSubmitted(true);
+            window.scrollTo({ top: 0, behaviour: 'smooth' });
         }
     }
 
