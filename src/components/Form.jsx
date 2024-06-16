@@ -7,8 +7,9 @@ import FormMessage from './FormMessage'
 import FormCheckBox from './FormCheckBox'
 
 const Form = () => {
-    const [emailSubmitted, setEmailSubmitted] = useState(false)
-    const [formTriggered, setFormTriggered] = useState(false)
+    const [emailSubmitted, setEmailSubmitted] = useState(false);
+    const [formTriggered, setFormTriggered] = useState(false);
+    const [activeMessage, setActiveMessage] = useState(false)
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -16,7 +17,7 @@ const Form = () => {
         queryType: '',
         message: '',
         consent: false,
-    })
+    });
 
     let err = [
         { input: 'firstName', errorType: '' },
@@ -25,16 +26,15 @@ const Form = () => {
         { input: 'queryType', errorType: '' },
         { input: 'message', errorType: '' },
         { input: 'consent', errorType: '' },
-];
-
+    ];
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value})
-    }
+    };
 
     const handleCheckbox = (e) => {
         setFormData({...formData, [e.target.name]: e.target.checked})
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -46,10 +46,10 @@ const Form = () => {
         const errorValues = input => input === 'empty' || input === 'invalid' || input === 'notChecked';
         if (!errorArrValues.some(errorValues)){
             setEmailSubmitted(true);
+            toggleNotification();
             window.scrollTo({ top: 0, behaviour: 'smooth' });
         }
-    }
-
+    };
 
     const getErrors = (data) => {
         if(isEmpty(data.firstName)){
@@ -75,16 +75,16 @@ const Form = () => {
             err.filter(entry => entry.input==='consent')[0].errorType = 'notChecked';
         }
         return err;
-    }
+    };
 
     const isEmpty = (value) => {
         return value==='';
-    }
+    };
 
     const verifyEmail = (email) => {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         return email.match(emailRegex);
-    }
+    };
 
     const getErrorActive = (id) => {
         if (isEmpty(formData[id])){
@@ -102,7 +102,12 @@ const Form = () => {
             }
         }
         return '';
-    }
+    };
+
+    const toggleNotification = () => {
+        setActiveMessage(!activeMessage)
+      }
+
 
 
     return (
@@ -168,7 +173,11 @@ const Form = () => {
                 formTriggered={formTriggered}
             />
             <button className="w-full mt-4 py-3 rounded-md bg-[#0c7d69] text-white text-lg text-center hover:bg-[#063f36] transition-all">Submit</button>
-            {emailSubmitted&&<ConfirmationMessage />}
+            {emailSubmitted&&
+            <ConfirmationMessage 
+                activeMessage={activeMessage}
+                toggleNotificationFunction={toggleNotification} 
+            />}
         </form>
     )
 }
