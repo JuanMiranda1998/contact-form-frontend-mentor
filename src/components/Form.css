@@ -9,8 +9,7 @@
     -ms-user-select: none;
     user-select: none;
   }
-  
-  /* Hide the browser's default checkbox */
+ 
   .inputCheckContainer input {
     position: absolute;
     opacity: 0;
@@ -19,7 +18,6 @@
     width: 0;
   }
   
-  /* Create a custom checkbox */
   .checkmark {
     position: absolute;
     top: 20%;
@@ -30,31 +28,26 @@
     border: 2px #ccc solid;
   }
   
-  /* On mouse-over, add a grey background color */
   .inputCheckContainer:hover input ~ .checkmark {
     border: 2px #7fc9bc solid;
   }
   
-  /* When the checkbox is checked, add a blue background */
   .inputCheckContainer input:checked ~ .checkmark {
     background-image: url(/icon-checkbox-check.svg);
     background-color: #0c7d69;
     border: 2px #0c7d69 solid;
   }
   
-  /* Create the checkmark/indicator (hidden when not checked) */
   .checkmark:after {
     content: "";
     position: absolute;
     display: none;
   }
   
-  /* Show the checkmark when checked */
   .inputCheckContainer input:checked ~ .checkmark:after {
     display: block;
   }
   
-  /* Style the checkmark/indicator */
   .inputCheckContainer .checkmark:after {
     left: 3px;
     top: 1px;

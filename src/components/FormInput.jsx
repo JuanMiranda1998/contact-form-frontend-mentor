@@ -1,5 +1,5 @@
 import './FormInput.css'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 const FormInput = ({ id, name, formData, handleChange, type, errors, errorActive, formTriggered  }) => {
     const [focused, setFocused] = useState(false)
