@@ -1,4 +1,3 @@
-import './Form.css'
 import { useState } from "react"
 import ConfirmationMessage from "./ConfirmationMessage"
 import FormInput from './FormInput'

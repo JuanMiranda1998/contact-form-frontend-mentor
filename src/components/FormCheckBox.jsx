@@ -1,3 +1,4 @@
+import './FormCheckBox.css'
 
 const FormCheckBox = ({ id, name, formData, handleChange, errors, errorActive, formTriggered }) => {
 
