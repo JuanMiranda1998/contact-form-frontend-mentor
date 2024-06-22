@@ -5,11 +5,11 @@ This is a solution to the [Contact form challenge on Frontend Mentor](https://ww
 ## Table of contents
 
 - [Overview](#overview)
-- [The challenge](#the-challenge)
-- [Screenshot](#screenshot)
-- [Links](#links)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
 - [My process](#my-process)
-- [Built with](#built-with)
+  - [Built with](#built-with)
 - [Author](#author)
 
 
@@ -38,7 +38,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [Github](https://github.com/JuanMiranda1998/contact-form-frontend-mentor)
-- Live Site URL: [Netlify](https://www.example.com)
+- Live Site URL: [Netlify](https://contact-form-juanmiranda.netlify.app/)
 
 ## My process
 
