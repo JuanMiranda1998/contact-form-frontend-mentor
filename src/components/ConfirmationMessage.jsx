@@ -2,7 +2,7 @@
 const ConfirmationMessage = ({ activeMessage, toggleNotificationFunction }) => {
   
   return (
-    <div className={`${!activeMessage && 'hidden' } w-[300px] lg:w-[400px] px-4 py-4 rounded-lg absolute top-1 left-1/2 -translate-x-1/2 bg-[#2a4244ef] text-white cursor-pointer hover:scale-105 transition-all ease-in duration-150`} id="successMessage" onClick={toggleNotificationFunction}>
+    <div className={`${!activeMessage && 'hidden' } w-[300px] lg:w-[400px] px-4 py-4 rounded-lg absolute top-1 left-1/2 -translate-x-1/2 bg-[#2a4244ef] text-white cursor-pointer hover:scale-105 transition-all ease-in duration-150`} id="successMessage" onClick={toggleNotificationFunction} role="alert" >
         <div className='flex flex-row items-center mb-2' >
           <div>
             <img src="/icon-success-check.svg" alt="" />

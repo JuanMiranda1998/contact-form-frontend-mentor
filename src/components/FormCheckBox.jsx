@@ -14,7 +14,7 @@ const FormCheckBox = ({ id, name, formData, handleChange, errors, errorActive, f
         <div>
           {errors.map((error, index) => (  
           <div key={index} className={`${isInvalid ? null : 'hidden'}`}>
-              <p className={`${(errorActive==='notChecked' && error.type==='notChecked') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
+              <p role="alert" className={`${(errorActive==='notChecked' && error.type==='notChecked') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
           </div> ))}
         </div>
     </div>

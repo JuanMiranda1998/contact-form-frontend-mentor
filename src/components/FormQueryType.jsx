@@ -19,7 +19,7 @@ const FormQueryType = ({ id, name, formData, handleChange, errors, errorActive, 
       <div>
           {errors.map((error, index) => (  
           <div key={index} className={`${(isInvalid && formTriggered) ? null : 'hidden'}`}>
-              <p className={`${(errorActive==='empty' && error.type==='empty') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
+              <p role="alert" className={`${(errorActive==='empty' && error.type==='empty') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
           </div> ))}
       </div>
     </div>
