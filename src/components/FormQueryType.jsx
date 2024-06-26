@@ -5,7 +5,7 @@ const FormQueryType = ({ id, name, formData, handleChange, errors, errorActive, 
   
   return (
     <div id={id} className="w-full flex flex-col justify-center items-start my-4">
-      <label className="mb-2" htmlFor="queryType">Query Type <span className="text-[#0c7d69]">*</span></label>
+      <label className="mb-2">Query Type <span className="text-[#0c7d69]">*</span></label>
       <fieldset role='radiogroup' className='w-full flex flex-col md:flex-row gap-4 mb-4 md:mb-2'>
         <label htmlFor='generalEnquiry' className={`form-control md:w-full flex flex-row py-3 px-6 border border-[#2b4246] rounded-md cursor-pointer hover:border-[#0c7d69] transition-all focus:outline-none focus:border-2 focus:border-[#0c7d69] ${formData==='generalEnquiry' ? 'bg-[#e0f1e7]': ''}`}>
           <input className='cursor-pointer' type="radio" name={name} id='generalEnquiry' value="generalEnquiry" onChange={handleChange} checked={formData==='generalEnquiry'} />
