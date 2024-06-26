@@ -11,7 +11,7 @@ const FormCheckBox = ({ id, name, formData, handleChange, errors, errorActive, f
             <span className="checkmark"></span>
             <p>I consent to being contacted by the team <span className="text-[#0c7d69]">*</span></p>
         </label>
-        <div>
+        <div aria-live='assertive'>
           {errors.map((error, index) => (  
           <div key={index} className={`${isInvalid ? null : 'hidden'}`}>
               <p role="alert" className={`${(errorActive==='notChecked' && error.type==='notChecked') ? 'block' : 'hidden'} my-2 text-sm text-[#d94545]`}>{error.message}</p>
